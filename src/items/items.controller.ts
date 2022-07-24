@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ItemStatus } from './item-status.enum';
 import { Item } from './item.model';
 import { ItemsService } from './items.service';
@@ -8,8 +8,23 @@ export class ItemsController {
     constructor(private readonly ItemsService: ItemsService) {}
 
     @Get()
-    findAll() {
+    findAll(): Item[] {
         return this.ItemsService.findAll();
+    }
+
+    @Get(':id')
+    findById(@Param('id') id: string): Item {        
+        return this.ItemsService.findById(id);
+    }
+
+    @Patch(':id')
+    updateStatus(@Param('id') id: string): Item {
+        return this.ItemsService.updateStatus(id)
+    }
+
+    @Delete(':id')
+    deleteItem(@Param('id') id: string): void {
+        this.ItemsService.deleteItem(id);
     }
 
     @Post()
