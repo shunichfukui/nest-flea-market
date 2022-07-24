@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { Item } from './item.model';
 import { ItemsService } from './items.service';
@@ -13,17 +13,17 @@ export class ItemsController {
     }
 
     @Get(':id')
-    findById(@Param('id') id: string): Item {        
+    findById(@Param('id', ParseUUIDPipe) id: string): Item {        
         return this.ItemsService.findById(id);
     }
 
     @Patch(':id')
-    updateStatus(@Param('id') id: string): Item {
+    updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
         return this.ItemsService.updateStatus(id)
     }
 
     @Delete(':id')
-    deleteItem(@Param('id') id: string): void {
+    deleteItem(@Param('id', ParseUUIDPipe) id: string): void {
         this.ItemsService.deleteItem(id);
     }
 
