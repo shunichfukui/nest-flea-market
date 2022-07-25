@@ -1,34 +1,34 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { Item } from 'src/entities/item.entity';
 import { CreateItemDto } from './dto/create-item.dto';
-import { Item } from './item.model';
 import { ItemsService } from './items.service';
 
 @Controller('items')
 export class ItemsController {
-    constructor(private readonly ItemsService: ItemsService) {}
+    constructor(private readonly itemsService: ItemsService) {}
 
     @Get()
     findAll(): Item[] {
-        return this.ItemsService.findAll();
+        return this.itemsService.findAll();
     }
 
     @Get(':id')
     findById(@Param('id', ParseUUIDPipe) id: string): Item {        
-        return this.ItemsService.findById(id);
+        return this.itemsService.findById(id);
     }
 
     @Patch(':id')
     updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
-        return this.ItemsService.updateStatus(id)
+        return this.itemsService.updateStatus(id)
     }
 
     @Delete(':id')
     deleteItem(@Param('id', ParseUUIDPipe) id: string): void {
-        this.ItemsService.deleteItem(id);
+        this.itemsService.deleteItem(id);
     }
 
     @Post()
-    create(@Body() createItemDto :CreateItemDto): Item {
-        return this.ItemsService.create(createItemDto);
+    async create(@Body() createItemDto :CreateItemDto): Promise<Item> {
+        return await this.itemsService.create(createItemDto);
     }
 }
